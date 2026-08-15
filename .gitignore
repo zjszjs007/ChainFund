@@ -1,0 +1,9 @@
+node_modules/
+.workbuddy/
+contract-config.json
+artifacts/
+cache/
+typechain-types/
+coverage/
+*.log
+.env
