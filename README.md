@@ -28,6 +28,8 @@ node start-dev.cjs
 
 执行后浏览器打开 http://localhost:5173 即可。脚本要求 Node.js 18+。
 
+> Windows 用户：可直接双击根目录的 `start.bat`，它会自动切换到脚本所在目录并定位 node 环境，效果同上（关闭窗口不会停止后台服务）。
+
 ## 手动运行步骤
 
 ```bash
