@@ -18,7 +18,17 @@ chainfund/
         └── components.jsx        # 项目卡片、进度条、里程碑时间线
 ```
 
-## 运行步骤
+## 快速启动（推荐）
+
+如果依赖已安装，一条命令即可拉起本地链 + 编译部署 + 前端（自动检测端口、后台托管进程，日志见 `chainfund-node.log` / `chainfund-frontend.log`）：
+
+```bash
+node start-dev.cjs
+```
+
+执行后浏览器打开 http://localhost:5173 即可。脚本要求 Node.js 18+。
+
+## 手动运行步骤
 
 ```bash
 # 1. 安装合约依赖
@@ -63,3 +73,16 @@ npm test
 - 里程碑状态机：`Locked → UnderReview → Released / Rejected`；
 - 未达标项目截止后任何人可 `markFailed()`，支持者 `refund()` 取回出资；
 - 所有关键动作均发出事件（Contributed / MilestoneRequested / Voted / MilestoneReleased / Refunded），便于链上审计。
+
+## 端口与常见问题
+
+| 服务 | 地址 | 说明 |
+|------|------|------|
+| Hardhat 本地链 | `http://127.0.0.1:8545` | 以太坊 JSON-RPC，测试账户 20 个（私钥固定） |
+| 前端开发服务器 | `http://localhost:5173` | Vite 仅绑定 IPv6 `localhost`，本机浏览器访问正常 |
+
+- **依赖已安装**：仓库内 `node_modules` 与 `frontend/node_modules` 均已就绪，首次运行可跳过 `npm install`。
+- **前端启动报 `.vite` 缓存错误**：若 Vite 提示无法清理 `node_modules/.vite/deps`，把该目录改名（如 `node_modules/.vite.bak`）后重跑 `npm run dev` 即可。
+- **重新部署会重置演示数据**：每次 `npm run deploy` / `node start-dev.cjs` 都会重新部署工厂并播种新演示项目，前端配置 `frontend/src/contract-config.json` 同步更新，刷新页面即生效。
+- **停止服务**：结束后台 Hardhat 节点与 Vite 进程即可；用 `node start-dev.cjs` 时日志可定位 PID。
+- **真实测试网部署**：修改 `hardhat.config.js` 增加网络与私钥，执行 `npx hardhat run scripts/deploy.js --network <网络>`，并在 `frontend/src/contract-config.json` 填入对应链的 `explorerUrl` 启用浏览器跳转。
